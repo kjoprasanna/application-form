@@ -911,7 +911,7 @@
         ipAddress: await getIpAddress(),
         timestamp: new Date().toISOString()
       };
-fetch('https://script.google.com/macros/s/AKfycbwMPw70oZYfun4LW1u-2n7CnMehJjhzMWK9bXrW7-7evlg9A1jbbuYclmqMJj9rE5Dbfw/exec', {  // Replace with your actual Web App URL
+fetch('https://script.google.com/macros/s/AKfycbw9duBzWXe5-fDNpQXl3X_vbk2WFOHzet1AMW3gcPyIjsyb5FjIjFv4mF-Pfq__O7M6Mw/exec', {  // Replace with your actual Web App URL
   method: 'POST',
   mode: 'cors',
   headers: {
@@ -919,7 +919,12 @@ fetch('https://script.google.com/macros/s/AKfycbwMPw70oZYfun4LW1u-2n7CnMehJjhzMW
   },
   body: JSON.stringify(formData)
 })
-.then(response => response.json())
+.then(response => {
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
+})
 .then(data => {
   loadingOverlay.remove();
   submitButton.disabled = false;
@@ -946,7 +951,7 @@ fetch('https://script.google.com/macros/s/AKfycbwMPw70oZYfun4LW1u-2n7CnMehJjhzMW
   loadingOverlay.remove();
   submitButton.disabled = false;
   submitButton.innerHTML = '<i class="bi bi-send me-2"></i>Submit Application';
-  showMessage('Network error. Please check your connection and try again.', 'danger');
+  showMessage('Network error. Please check your connection and try again: ' + error.message, 'danger');
   console.error('Submission error:', error);
 });
     });
@@ -1051,4 +1056,5 @@ fetch('https://script.google.com/macros/s/AKfycbwMPw70oZYfun4LW1u-2n7CnMehJjhzMW
     });
   </script>
 </body>
+
 </html>
